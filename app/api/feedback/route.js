@@ -21,7 +21,7 @@ export async function GET() {
   });
 }
 
-export async function POST(req) {
+export async function POST(req, res) {
   const feedback = await req.json();
   const comment = {
     ...feedback,
@@ -34,6 +34,12 @@ export async function POST(req) {
   data.push(comment);
 
   fs.writeFileSync(filepath, JSON.stringify(data));
+
+  // const { path } = req.body;
+
+  // res.revalidate(path);
+
+  // Do the revalidation before anything change
 
   return NextResponse.json({ message: "Feedback received", data: comment });
 }

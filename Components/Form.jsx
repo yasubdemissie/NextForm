@@ -13,7 +13,6 @@ function FormPage() {
 
   async function onSubmit(values) {
     const data = await submitForm(values);
-    console.log(data);
     reset();
   }
 
