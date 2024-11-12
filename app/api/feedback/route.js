@@ -2,21 +2,38 @@ import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 
-export async function POST(req, res) {
+function helperGetPath() {
+  return path.join(process.cwd(), "data", "comments.json");
+}
+function helperGetComment(filepath) {
+  const file = fs.readFileSync(filepath);
+
+  return JSON.parse(file);
+}
+
+export async function GET() {
+  const filePath = helperGetPath();
+
+  const data = helperGetComment(filePath);
+  return NextResponse.json({
+    message: "Comments send successfully",
+    comments: data,
+  });
+}
+
+export async function POST(req) {
   const feedback = await req.json();
   const comment = {
     ...feedback,
     id: new Date().toISOString(),
   };
 
-  const filepath = path.join(process.cwd(), "data", "comments.json");
-  const file = await fs.readFile(filepath);
+  const filepath = helperGetPath();
+  const data = helperGetComment(filepath);
 
-  const data = JSON.parse(file);
+  data.push(comment);
 
-  let Data = data.push(comment);
+  fs.writeFileSync(filepath, JSON.stringify(data));
 
-  await fs.writeFile(filepath, JSON.stringify(data));
-
-  return NextResponse.json(Data);
+  return NextResponse.json({ message: "Feedback received", data: comment });
 }

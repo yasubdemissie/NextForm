@@ -1,8 +1,11 @@
-export default function Comments() {
+import { getComments } from "@/ApiFunctions/formSubmit";
+
+export default async function Comments({ email, message }) {
+  const name = email.split("@")[0];
   return (
-    <div className="flex justify-start rounded-2xl my-1 flex-col h-20 w-full bg-slate-600/30 items-center p-3">
-      <h4>YasubDam</h4>
-      <p>Great job! Keep it up!</p>
+    <div className="flex justify-start rounded-2xl my-2 flex-col w-full bg-white shadow-md px-6 py-3">
+      <h2 className=" text-xl font-bold text-gray-800">{name}</h2>
+      <p className="text-gray-600 mt-2">{message}</p>
     </div>
   );
 }
