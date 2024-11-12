@@ -18,8 +18,8 @@ function FormPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-2/5 p-6 bg-white rounded-lg shadow-md">
+    <div className="flex items-center justify-center bg-gray-100 w-full h-full">
+      <div className="w-3/5 p-6 bg-white rounded-lg shadow-md">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
             <label
