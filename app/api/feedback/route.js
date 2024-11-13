@@ -2,13 +2,21 @@ import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 
-function helperGetPath() {
+export function helperGetPath() {
   return path.join(process.cwd(), "data", "comments.json");
 }
-function helperGetComment(filepath) {
-  const file = fs.readFileSync(filepath);
-
-  return JSON.parse(file);
+export function helperGetComment(filepath) {
+  try {
+    const fileData = fs.readFileSync(filepath, "utf-8");
+    return JSON.parse(fileData);
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      // File does not exist, return an empty array
+      return [];
+    } else {
+      throw error;
+    }
+  }
 }
 
 export async function GET() {
@@ -34,12 +42,6 @@ export async function POST(req, res) {
   data.push(comment);
 
   fs.writeFileSync(filepath, JSON.stringify(data));
-
-  // const { path } = req.body;
-
-  // res.revalidate(path);
-
-  // Do the revalidation before anything change
 
   return NextResponse.json({ message: "Feedback received", data: comment });
 }

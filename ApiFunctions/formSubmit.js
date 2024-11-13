@@ -7,6 +7,8 @@ export async function submitForm(formData) {
     body: JSON.stringify(formData),
   });
 
+  window.location.reload();
+
   return data.json();
 }
 
