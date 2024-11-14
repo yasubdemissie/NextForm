@@ -1,9 +1,9 @@
 "use server";
-import fs from 'fs';
+import fs from "fs";
 
 import { helperGetComment, helperGetPath } from "@/app/api/feedback/route";
-import { revalidatePath } from 'next/cache';
-import prisma from '@/_lib/_base';
+import { revalidatePath } from "next/cache";
+import prisma from "@/_lib/_base";
 
 export async function submitAction(prevState, formData) {
   const email = formData.get("email");
@@ -22,13 +22,12 @@ export async function submitAction(prevState, formData) {
 
   fs.writeFileSync(filepath, JSON.stringify(data));
 
-  revalidatePath('/');
+  revalidatePath("/");
 
   return { message: "Feedback received", data: comment };
 }
 
 export async function formAction(prevState, formData) {
-
   const title = formData.get("title");
   const content = formData.get("content");
 
@@ -42,10 +41,19 @@ export async function formAction(prevState, formData) {
     data: comment,
   });
 
-  console.log(data);
-
-
-  revalidatePath('/');
+  revalidatePath("/");
 
   return { message: "Feedback received", data: comment };
+}
+
+export async function deleteFeedback(id = 1) {
+  const deletePost = await prisma.post.delete({
+    where: {
+      id: id,
+    },
+  });
+
+  console.log(`deleting ${id}`);
+
+  revalidatePath("/");
 }

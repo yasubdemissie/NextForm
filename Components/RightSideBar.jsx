@@ -13,7 +13,8 @@ async function RightSideBar() {
       {data.map((comment) => (
         <Comments
           key={comment.id}
-          email={comment.title}
+          id={comment.id}
+          title={comment.title}
           message={comment.content}
           like={comment.like}
         />

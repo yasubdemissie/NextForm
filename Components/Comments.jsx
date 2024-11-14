@@ -1,9 +1,10 @@
 "use client";
+import { deleteFeedback } from "@/ApiFunctions/serverFunc";
 import { useState } from "react";
-import { FaRegComment } from "react-icons/fa"; // Import the comment icon from react-icons
+import { FaRegComment, FaTrash } from "react-icons/fa"; // Import the comment icon from react-icons
 
-export default function Comments({ email, message, like }) {
-  const name = email.split("@")[0];
+export default function Comments({ id, title, message, like }) {
+  const name = title;
   const [liked, setLiked] = useState(false);
   const [numLiked, setNumLiked] = useState(like);
 
@@ -46,6 +47,9 @@ export default function Comments({ email, message, like }) {
         <button className="flex items-center text-gray-600 hover:text-gray-800 ml-4">
           <FaRegComment className="h-6 w-6 mr-1" />
           Comment
+        </button>
+        <button onClick={() => deleteFeedback(id)} className="flex items-center text-gray-600 hover:text-gray-800 ml-4">
+          <FaTrash style={{color: 'red', marginLeft: "350px"}} className="h-6 w-6 mr-1" />
         </button>
       </div>
     </div>
