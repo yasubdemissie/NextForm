@@ -1,17 +1,21 @@
-import { getComments } from "@/ApiFunctions/formSubmit";
+// import { getComments } from "@/ApiFunctions/formSubmit";
+import prisma from "@/_lib/_base";
 import Comments from "./Comments";
+// import { Prisma } from "@prisma/client";
 
 async function RightSideBar() {
-  const data = await getComments();
+  const data = await prisma.post.findMany();
 
-  const comments = data.comments;
+  console.log(data);
+
   return (
     <div className="flex flex-col row-span-11 items-center px-5 overflow-y-scroll">
-      {comments.map((comment) => (
+      {data.map((comment) => (
         <Comments
           key={comment.id}
-          email={comment.email}
-          message={comment.feedback}
+          email={comment.title}
+          message={comment.content}
+          like={comment.like}
         />
       ))}
     </div>
