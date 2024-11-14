@@ -12,6 +12,10 @@ export async function submitForm(formData) {
   return data.json();
 }
 
+export async function submitAction(prevState, formData) {
+  console.log(formData);
+}
+
 export async function getComments() {
   try {
     const res = await fetch(`${BASE_URL}/api/feedback`);

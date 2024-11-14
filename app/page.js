@@ -1,4 +1,4 @@
-import FormPage from "@/Components/Form";
+import FormPage from "@/Components/Form2";
 import Context from "@/Components/Context";
 import RightSideBar from "@/Components/RightSideBar";
 
