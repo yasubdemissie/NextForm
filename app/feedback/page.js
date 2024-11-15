@@ -54,7 +54,7 @@
 // }
 
 // export default FeedbackForm;
-import FormPage from "@/Components/Form";
+import FormPage from "@/Components/SignUp";
 
 export default function FeedbackForm() {
   return (
