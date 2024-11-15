@@ -1,10 +1,9 @@
-'use client';
-import { signUp } from '@/ApiFunctions/userServer';
-import { useActionState } from 'react';
+"use client";
+import { signUp } from "@/ApiFunctions/userServer";
+import { useActionState } from "react";
 
 export default function FormPage() {
-
-  const [state, formAction ] = useActionState(signUp, {});
+  const [state, formAction, isPending] = useActionState(signUp, {});
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -25,6 +24,11 @@ export default function FormPage() {
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               required
             />
+            {state?.error?.name && (
+              <p className="px-4 my-1 py-1 bg-red-500/10 text-red-500 rounded-xl">
+                food
+              </p>
+            )}
           </div>
           <div className="mb-4">
             <label
@@ -40,6 +44,11 @@ export default function FormPage() {
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               required
             />
+            {state?.error?.email && (
+              <p className="mx-2 my-1 bg-red-500/10 text-red-500">
+                {state.error.email}
+              </p>
+            )}
           </div>
           <div className="mb-4">
             <label
@@ -55,12 +64,24 @@ export default function FormPage() {
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               required
             />
+            {state?.error?.password && (
+              <ul>
+                {state.error.password.map((error, index) => (
+                  <li
+                    key={index}
+                    className="mx-2 my-1 bg-red-500/10 text-red-500"
+                  >
+                    {error}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
           <button
-            type="submit"
+            disabled={isPending}
             className="w-full px-4 py-2 bg-indigo-600 text-white font-medium rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            Sign Up
+            {isPending ? "...Submitting" : "Sign Up"}
           </button>
         </form>
       </div>
