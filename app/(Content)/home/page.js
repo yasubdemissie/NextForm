@@ -1,8 +1,13 @@
-import FormPage from "@/Components/Form2";
+import FormPage from "@/Components/FormPage";
 import Context from "@/Components/Context";
 import RightSideBar from "@/Components/RightSideBar";
 
 export default async function Home() {
+
+  const user = await fetch('https://localhost:3000/api');
+
+  console.log(user);
+
   return (
     <Context>
       <div className="grid grid-cols-2 grid-rows-12 w-dvw overflow-x-hidden h-dvh">

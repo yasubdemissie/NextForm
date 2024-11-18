@@ -1,46 +1,22 @@
 "use client";
-import { signUp } from "@/ApiFunctions/userServer";
-import { useActionState } from "react";
-import { useEffect } from "react";
+import { loginUser } from "@/ApiFunctions/userServer";
+import { useActionState, useEffect } from "react";
 import toast from "react-hot-toast";
 
-export default function FormPage() {
-  const [state, formAction, isPending] = useActionState(signUp, {});
+export default function Login() {
+  const [state, formAction, isPending] = useActionState(loginUser, {});
 
-  // Use useEffect to show toast when there is an error message
   useEffect(() => {
-    if (state?.error?.message) {
-      toast.error(state.error.message);
+    if (state?.error?.email) {
+      toast.error(state.error.email);
     }
-  }, [state?.error?.message]);
-
-  console.log(state);
+  }, [state?.error?.email]);
 
   return (
     <div className="flex items-center justify-center h-fit bg-gray-100">
       <div className="w-full p-6 bg-white rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
+        <h2 className="text-2xl font-bold mb-4">Login</h2>
         <form action={formAction}>
-          <div className="mb-4">
-            <label
-              htmlFor="username"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Username:
-            </label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              required
-            />
-            {state?.error?.name && (
-              <p className="px-4 my-1 py-1 bg-red-500/10 text-red-500 rounded-xl">
-                {state.error.name}
-              </p>
-            )}
-          </div>
           <div className="mb-4">
             <label
               htmlFor="email"
@@ -56,7 +32,7 @@ export default function FormPage() {
               required
             />
             {state?.error?.email && (
-              <p className="mx-2 my-1 bg-red-500/10 text-red-500">
+              <p className="text-red-500 text-sm italic mt-1 hidden">
                 {state.error.email}
               </p>
             )}
@@ -76,23 +52,17 @@ export default function FormPage() {
               required
             />
             {state?.error?.password && (
-              <ul>
-                {state.error.password.map((error, index) => (
-                  <li
-                    key={index}
-                    className="mx-2 my-1 bg-red-500/10 text-red-500"
-                  >
-                    {error}
-                  </li>
-                ))}
-              </ul>
+              <p className="text-red-500 text-sm italic mt-1 hidden">
+                {state.error.password}
+              </p>
             )}
           </div>
           <button
+            type="submit"
             disabled={isPending}
             className="w-full px-4 py-2 bg-indigo-600 text-white font-medium rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            {isPending ? "...Submitting" : "Sign Up"}
+            {isPending ? "Logining in" : "Login"}
           </button>
         </form>
       </div>

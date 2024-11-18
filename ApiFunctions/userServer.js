@@ -31,14 +31,21 @@ export async function signUp(prevState, formData) {
     data: { name, email, password: hashedPassword },
   });
 
-  await createSession(user.id);
-
-  redirect("/home");
+  await createSession(user.id).then(() => {
+    redirect("/home");
+  });
 }
 
-export async function login(prevState, formData) {
+export async function loginUser(prevState, formData) {
   const email = formData.get("email");
   const password = formData.get("password");
+
+  // const validate = SignupFormSchema.safeParse({ email, password });
+
+  // if (!validate.success) {
+  //   console.error(validate.error.flatten().fieldErrors);
+  //   return { error: validate.error.flatten().fieldErrors };
+  // }
 
   const user = await prisma.user.findUnique({
     where: { email },
@@ -62,4 +69,14 @@ export async function login(prevState, formData) {
 export async function logout() {
   await deleteSession();
   redirect("/login");
+}
+
+export async function getUser(userId) {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  const { id, email, username } = user; 
+
+  return user;
 }
