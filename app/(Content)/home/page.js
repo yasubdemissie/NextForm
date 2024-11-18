@@ -4,9 +4,7 @@ import RightSideBar from "@/Components/RightSideBar";
 
 export default async function Home() {
 
-  const user = await fetch('https://localhost:3000/api');
-
-  console.log(user);
+   await fetch('http://localhost:3000/api');
 
   return (
     <Context>

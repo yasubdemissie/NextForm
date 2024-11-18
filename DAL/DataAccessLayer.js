@@ -1,22 +1,29 @@
-import prisma from "@/_lib/_base";
-import { decrypt } from "@/_lib/session";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import 'server-only';
+
 import { cache } from "react";
 
-export const verifySession = cache(async () => {
-  const session = (await cookies())?.get("session")?.value;
-  const payload = await decrypt(session);
+import prisma from "@/_lib/_base";
+import { decrypt, getSession } from "@/_lib/session";
+import "server-only";
 
-  if (!session || !payload) {
-    redirect("/");
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+
+export const verifySession = cache(async () => {
+  const cookie = (await cookies()).get("session")?.value;
+  const session = await decrypt(cookie);
+
+  if (!session?.id) {
+    console.log("/login");
   }
 
-  return { auth: true, userId: payload.id };
+  // return { isAuth: true, userId: session.id };
 });
 
 export const getUser = cache(async () => {
   const { userId } = verifySession();
+
+  console.log(userId);
 
   if (!userId) {
     return redirect("/");

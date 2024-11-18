@@ -8,11 +8,13 @@ export default async function middleware(req, res) {
   // It will run before every API route
   const url = req.nextUrl.pahtname;
 
+  console.log("middleware: " + isProtectedRoute.includes(url));
+
   if (isProtectedRoute.includes(url)) {
 
-    const session = getSession();
+    const session = await getSession();
 
-    console.log(`midlleWare ${session}`);
+    console.log(session);
 
     if (!session) {
       return NextResponse.redirect(new URL("/", req.url));

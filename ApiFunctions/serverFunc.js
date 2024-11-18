@@ -4,6 +4,7 @@ import fs from "fs";
 import { helperGetComment, helperGetPath } from "@/app/api/feedback/route";
 import { revalidatePath } from "next/cache";
 import prisma from "@/_lib/_base";
+import { verifySession } from "@/DAL/DataAccessLayer";
 
 export async function submitAction(prevState, formData) {
   const email = formData.get("email");
@@ -37,10 +38,11 @@ export async function formAction(prevState, formData) {
   };
   console.log(comment);
 
-  const data = await prisma.post.create({
-    data: comment,
-  });
+  // const data = await prisma.post.create({
+  //   data: comment,
+  // });
 
+  await verifySession().then((res) => console.log(res));
   revalidatePath("/");
 
   return { message: "Feedback received", data: comment };
