@@ -1,9 +1,20 @@
 "use client";
 import { signUp } from "@/ApiFunctions/userServer";
 import { useActionState } from "react";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 export default function FormPage() {
   const [state, formAction, isPending] = useActionState(signUp, {});
+
+  // Use useEffect to show toast when there is an error message
+  useEffect(() => {
+    if (state?.error?.message) {
+      toast.error(state.error.message);
+    }
+  }, [state?.error?.message]);
+
+  console.log(state);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -26,7 +37,7 @@ export default function FormPage() {
             />
             {state?.error?.name && (
               <p className="px-4 my-1 py-1 bg-red-500/10 text-red-500 rounded-xl">
-                food
+                {state.error.name}
               </p>
             )}
           </div>
