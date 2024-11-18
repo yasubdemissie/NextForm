@@ -6,15 +6,15 @@ export default async function middleware(req, res) {
   const isProtectedRoute = ['/home'];
 
   // It will run before every API route
-  const url = req.nextUrl.pahtname;
+  const url = "/" +  req.url.split('/').pop();
 
-  console.log("middleware: " + isProtectedRoute.includes(url));
+  console.log("middleware: " + url);
 
   if (isProtectedRoute.includes(url)) {
 
     const session = await getSession();
 
-    console.log(session);
+    console.log(`session: ${session}`);
 
     if (!session) {
       return NextResponse.redirect(new URL("/", req.url));

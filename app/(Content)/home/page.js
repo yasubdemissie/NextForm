@@ -6,6 +6,8 @@ export default async function Home() {
 
    await fetch('http://localhost:3000/api');
 
+  //  console.log(user);
+
   return (
     <Context>
       <div className="grid grid-cols-2 grid-rows-12 w-dvw overflow-x-hidden h-dvh">

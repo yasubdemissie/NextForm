@@ -1,10 +1,9 @@
-import 'server-only';
+import "server-only";
 
 import { cache } from "react";
 
 import prisma from "@/_lib/_base";
-import { decrypt, getSession } from "@/_lib/session";
-import "server-only";
+import { decrypt } from "@/_lib/session";
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -13,11 +12,11 @@ export const verifySession = cache(async () => {
   const cookie = (await cookies()).get("session")?.value;
   const session = await decrypt(cookie);
 
-  if (!session?.id) {
-    console.log("/login");
+  if (session && !session.userId) {
+    redirect("/");
   }
 
-  // return { isAuth: true, userId: session.id };
+  return { isAuth: true, userId: session.userId };
 });
 
 export const getUser = cache(async () => {
