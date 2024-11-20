@@ -47,21 +47,21 @@ export async function loginUser(prevState, formData) {
   //   return { error: validate.error.flatten().fieldErrors };
   // }
 
-  const user = await prisma.user.findUnique({
-    where: { email },
-  });
+  // const user = await prisma.user.findUnique({
+  //   where: { email },
+  // });
 
-  if (!user) {
-    return { error: { email: "User not found" } };
-  }
+  // if (!user) {
+  //   return { error: { email: "User not found" } };
+  // }
 
-  const match = await bcrypt.compare(password, user.password);
+  // const match = await bcrypt.compare(password, user.password);
 
-  if (!match) {
-    return { error: { password: "Incorrect password" } };
-  }
+  // if (!match) {
+  //   return { error: { password: "Incorrect password" } };
+  // }
 
-  await createSession(user.id);
+  // await createSession(user.id);
 
   redirect("/home");
 }

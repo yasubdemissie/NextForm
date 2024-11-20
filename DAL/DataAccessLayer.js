@@ -3,20 +3,19 @@ import "server-only";
 import { cache } from "react";
 
 import prisma from "@/_lib/_base";
-import { decrypt } from "@/_lib/session";
+import { decrypt, getSession } from "@/_lib/session";
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export const verifySession = cache(async () => {
-  const cookie = (await cookies()).get("session")?.value;
-  const session = await decrypt(cookie);
+  const session = await getSession();
 
-  if (session && !session.userId) {
-    redirect("/");
+  if (!session) {
+    return { session: null, isAuth: false };
   }
 
-  return { isAuth: true, userId: session.userId };
+  return { isAuth: true, session };
 });
 
 export const getUser = cache(async () => {
@@ -25,7 +24,7 @@ export const getUser = cache(async () => {
   console.log(userId);
 
   if (!userId) {
-    return redirect("/");
+    return redirect("/home");
   }
 
   const user = await prisma.user.findUnique({
