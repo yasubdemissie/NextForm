@@ -68,15 +68,15 @@ export async function loginUser(prevState, formData) {
 
 export async function logout() {
   await deleteSession();
-  redirect("/login");
+  redirect("/");
 }
 
-export async function getUser(userId) {
+export async function getUserById(userId) {
   const user = await prisma.user.findUnique({
     where: { id: userId },
   });
 
-  const { id, email, username } = user; 
+  const { id, email, name } = user;
 
-  return user;
+  return { id, email, name };
 }

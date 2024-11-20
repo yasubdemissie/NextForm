@@ -6,9 +6,12 @@ import { revalidatePath } from "next/cache";
 import prisma from "@/_lib/_base";
 import { getUser, verifySession } from "@/DAL/DataAccessLayer";
 import { redirect } from "next/navigation";
-import { error } from "console";
 
 export async function submitAction(prevState, formData) {
+  const verified = await verifySession();
+
+  if (!verified) redirect("/");
+
   const email = formData.get("email");
   const feedback = formData.get("feedback");
 
@@ -30,11 +33,11 @@ export async function submitAction(prevState, formData) {
   return { message: "Feedback received", data: comment };
 }
 
-export async function formAction(prevState, formData) {
-  try {
-    const verified = await verifySession();
+export async function AddFeedBack(prevState, formData) {
+  const verified = await verifySession();
 
-    if (!verified) redirect("/");
+  if (!verified) redirect("/");
+  try {
     const title = formData.get("title");
     const content = formData.get("content");
 
@@ -46,8 +49,7 @@ export async function formAction(prevState, formData) {
 
     const poster = { authorId: user.id, ...comment };
 
-    // console.log(poster, verified);
-    const data = await prisma.post.create({
+    await prisma.post.create({
       data: poster,
     });
 
@@ -61,7 +63,10 @@ export async function formAction(prevState, formData) {
 }
 
 export async function deleteFeedback(id = 1) {
-  const deletePost = await prisma.post.delete({
+  const verified = await verifySession();
+
+  if (!verified) redirect("/");
+  await prisma.post.delete({
     where: {
       id: id,
     },

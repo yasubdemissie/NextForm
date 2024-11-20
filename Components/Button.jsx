@@ -1,3 +1,4 @@
+"use client";
 const Button = ({ onClick, children, className }) => {
   return (
     <button

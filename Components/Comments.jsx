@@ -3,8 +3,8 @@ import { deleteFeedback } from "@/ApiFunctions/serverFunc";
 import { useState } from "react";
 import { FaRegComment, FaTrash } from "react-icons/fa"; // Import the comment icon from react-icons
 
-export default function Comments({ id, title, message, like }) {
-  const name = title;
+export default function Comments({ id, title, message, like, userName }) {
+  const commentTitle = title;
   const [liked, setLiked] = useState(false);
   const [numLiked, setNumLiked] = useState(like);
 
@@ -21,7 +21,10 @@ export default function Comments({ id, title, message, like }) {
 
   return (
     <div className="flex justify-start rounded-2xl my-2 flex-col w-full bg-white shadow-md px-6 py-3">
-      <h2 className="text-xl font-bold text-gray-800">{name}</h2>
+      <div className="flex justify-between">
+        <h2 className="text-xl font-bold text-gray-800">{commentTitle}</h2>
+        <h2 className="text-md italic font-bold text-gray-500">{userName}</h2>
+      </div>
       <p className="text-gray-600 mt-2">{message}</p>
       <div className="flex items-center mt-4">
         <button
@@ -48,8 +51,14 @@ export default function Comments({ id, title, message, like }) {
           <FaRegComment className="h-6 w-6 mr-1" />
           Comment
         </button>
-        <button onClick={() => deleteFeedback(id)} className="flex items-center text-gray-600 hover:text-gray-800 ml-4">
-          <FaTrash style={{color: 'red', marginLeft: "350px"}} className="h-6 w-6 mr-1" />
+        <button
+          onClick={() => deleteFeedback(id)}
+          className="flex items-center text-gray-600 hover:text-gray-800 ml-4"
+        >
+          <FaTrash
+            style={{ color: "red", marginLeft: "350px" }}
+            className="h-6 w-6 mr-1"
+          />
         </button>
       </div>
     </div>

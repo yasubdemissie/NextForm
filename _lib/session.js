@@ -39,7 +39,6 @@ export async function getSession() {
   const cookiesStore = await cookies();
   const session = cookiesStore.get("session")?.value;
   const payload = typeof session === "string" ? await decrypt(session) : null;
-  console.log(payload);
 
   if (!session || !payload) {
     return null;

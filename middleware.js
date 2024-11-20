@@ -1,6 +1,19 @@
-export default async function middleware(req, res, next) {
+import { NextResponse } from "next/server";
+import { verifySession } from "./DAL/DataAccessLayer";
+
+export default async function middleware(req) {
+  const ProtectedRoutes = ["/home", "/profile", "/feedback"];
+  const PublicRoutes = ["/", "/login", "/register"];
+
+  const baseUrl = req.nextUrl.origin;
   const url = req.nextUrl.pathname;
-  console.log("Middleware ", url);
+
+  if (ProtectedRoutes.includes(url)) {
+    const verified = await verifySession();
+
+    if (!verified) NextResponse.redirect(baseUrl);
+    console.log(baseUrl);
+  } else console.log("Public Route ", url);
 }
 
 export const config = {
