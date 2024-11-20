@@ -15,21 +15,19 @@ export const verifySession = cache(async () => {
     return { session: null, isAuth: false };
   }
 
-  return { isAuth: true, session };
+  return { isAuth: true, session: session };
 });
 
 export const getUser = cache(async () => {
-  const { userId } = verifySession();
+  const { session } = await verifySession();
 
-  console.log(userId);
-
-  if (!userId) {
-    return redirect("/home");
+  if (!session?.userId) {
+    return redirect("/");
   }
 
   const user = await prisma.user.findUnique({
     where: {
-      id: userId,
+      id: session.userId,
     },
     select: {
       id: true,

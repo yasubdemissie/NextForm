@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/_lib/_base";
-import { SignupFormSchema } from "@/_lib/dbSchema";
+import { LoginFormSchema, SignupFormSchema } from "@/_lib/dbSchema";
 import { createSession, deleteSession } from "@/_lib/session";
 import bcrypt from "bcrypt";
 import { redirect } from "next/navigation";
@@ -40,28 +40,28 @@ export async function loginUser(prevState, formData) {
   const email = formData.get("email");
   const password = formData.get("password");
 
-  // const validate = SignupFormSchema.safeParse({ email, password });
+  const validate = LoginFormSchema.safeParse({ email, password });
 
-  // if (!validate.success) {
-  //   console.error(validate.error.flatten().fieldErrors);
-  //   return { error: validate.error.flatten().fieldErrors };
-  // }
+  if (!validate.success) {
+    console.error(validate.error.flatten().fieldErrors);
+    return { error: validate.error.flatten().fieldErrors };
+  }
 
-  // const user = await prisma.user.findUnique({
-  //   where: { email },
-  // });
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
 
-  // if (!user) {
-  //   return { error: { email: "User not found" } };
-  // }
+  if (!user) {
+    return { error: { email: "User not found" } };
+  }
 
-  // const match = await bcrypt.compare(password, user.password);
+  const match = await bcrypt.compare(password, user.password);
 
-  // if (!match) {
-  //   return { error: { password: "Incorrect password" } };
-  // }
+  if (!match) {
+    return { error: { password: "Incorrect password" } };
+  }
 
-  // await createSession(user.id);
+  await createSession(user.id);
 
   redirect("/home");
 }

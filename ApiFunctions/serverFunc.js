@@ -4,8 +4,9 @@ import fs from "fs";
 import { helperGetComment, helperGetPath } from "@/app/api/feedback/route";
 import { revalidatePath } from "next/cache";
 import prisma from "@/_lib/_base";
-import { verifySession } from "@/DAL/DataAccessLayer";
+import { getUser, verifySession } from "@/DAL/DataAccessLayer";
 import { redirect } from "next/navigation";
+import { error } from "console";
 
 export async function submitAction(prevState, formData) {
   const email = formData.get("email");
@@ -30,27 +31,33 @@ export async function submitAction(prevState, formData) {
 }
 
 export async function formAction(prevState, formData) {
-  
-  const verified = await verifySession();
-  console.log(verified);
+  try {
+    const verified = await verifySession();
 
-  if (!verified) redirect("/");
-  const title = formData.get("title");
-  const content = formData.get("content");
+    if (!verified) redirect("/");
+    const title = formData.get("title");
+    const content = formData.get("content");
 
-  const comment = {
-    content,
-    title,
-  };
-  console.log(comment, verified);
+    const comment = {
+      content,
+      title,
+    };
+    const user = await getUser();
 
-  // const data = await prisma.post.create({
-  //   data: comment,
-  // });
+    const poster = { authorId: user.id, ...comment };
 
-  revalidatePath("/home");
+    // console.log(poster, verified);
+    const data = await prisma.post.create({
+      data: poster,
+    });
 
-  return { message: "Feedback received", data: comment };
+    revalidatePath("/home");
+
+    return { message: "Feedback received", data: comment };
+  } catch (err) {
+    console.log("Can't get the user", err);
+    return { error: "Can't get the user" };
+  }
 }
 
 export async function deleteFeedback(id = 1) {

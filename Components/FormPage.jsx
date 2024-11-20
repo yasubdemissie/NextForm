@@ -1,6 +1,6 @@
 "use client";
 
-import { submitAction, formAction as submitter } from "@/ApiFunctions/serverFunc";
+import { formAction as submitter } from "@/ApiFunctions/serverFunc";
 import { useActionState } from "react";
 
 function FormPage() {

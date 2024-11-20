@@ -37,13 +37,11 @@ export async function createSession(userId) {
 
 export async function getSession() {
   const cookiesStore = await cookies();
-  console.log(cookiesStore);
   const session = cookiesStore.get("session")?.value;
-  console.log(`SESSION TYPE: ${typeof session}`);
-  const payload = typeof session === 'string' ? await decrypt(session) : null;
-  console.log(typeof payload);
+  const payload = typeof session === "string" ? await decrypt(session) : null;
+  console.log(payload);
 
-  if (!session || !true) {
+  if (!session || !payload) {
     return null;
   }
 
