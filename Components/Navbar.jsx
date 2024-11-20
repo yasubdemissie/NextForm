@@ -2,7 +2,6 @@
 import { getUser } from "@/DAL/DataAccessLayer";
 import Image from "next/image";
 import Link from "next/link";
-import Button from "./Button";
 import { LogoutButton } from "./LogoutButton";
 
 export default async function NavBar() {

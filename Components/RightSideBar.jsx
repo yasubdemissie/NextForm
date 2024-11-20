@@ -9,7 +9,6 @@ async function RightSideBar() {
   const users = await Promise.all(
     data.map(async (comment) => await getUserById(comment.authorId))
   );
-  console.log(users);
 
   return (
     <div className="flex flex-col row-span-11 items-center px-5 overflow-y-scroll">

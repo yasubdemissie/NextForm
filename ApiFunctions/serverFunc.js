@@ -38,24 +38,26 @@ export async function AddFeedBack(prevState, formData) {
 
   if (!verified) redirect("/");
   try {
-    const title = formData.get("title");
-    const content = formData.get("content");
+    if (verified) {
+      const title = formData.get("title");
+      const content = formData.get("content");
 
-    const comment = {
-      content,
-      title,
-    };
-    const user = await getUser();
+      const comment = {
+        content,
+        title,
+      };
+      const user = await getUser();
 
-    const poster = { authorId: user.id, ...comment };
+      const poster = { authorId: user.id, ...comment };
 
-    await prisma.post.create({
-      data: poster,
-    });
+      await prisma.post.create({
+        data: poster,
+      });
 
-    revalidatePath("/home");
+      revalidatePath("/home");
 
-    return { message: "Feedback received", data: comment };
+      return { message: "Feedback received", data: comment };
+    }
   } catch (err) {
     console.log("Can't get the user", err);
     return { error: "Can't get the user" };
@@ -66,13 +68,15 @@ export async function deleteFeedback(id = 1) {
   const verified = await verifySession();
 
   if (!verified) redirect("/");
-  await prisma.post.delete({
-    where: {
-      id: id,
-    },
-  });
+  if (verified) {
+    await prisma.post.delete({
+      where: {
+        id: id,
+      },
+    });
 
-  console.log(`deleting ${id}`);
+    console.log(`deleting ${id}`);
 
-  revalidatePath("/");
+    revalidatePath("/");
+  }
 }

@@ -3,9 +3,8 @@ import "server-only";
 import { cache } from "react";
 
 import prisma from "@/_lib/_base";
-import { decrypt, getSession } from "@/_lib/session";
+import { getSession } from "@/_lib/session";
 
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export const verifySession = cache(async () => {
@@ -21,8 +20,8 @@ export const verifySession = cache(async () => {
 export const getUser = cache(async () => {
   const { session } = await verifySession();
 
-  if (!session?.userId) {
-    return redirect("/");
+  if (!session) {
+    return null;
   }
 
   const user = await prisma.user.findUnique({
