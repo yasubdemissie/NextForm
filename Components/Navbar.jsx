@@ -6,8 +6,9 @@ import { LogoutButton } from "./LogoutButton";
 
 export default async function NavBar() {
   const user = await getUser();
+  console.log(user);
   return (
-    <nav className="bg-gray-800 col-span-2 row-span-1 pt-2 flex items-center justify-center">
+    <nav className="bg-gray-800 col-span-2 row-span-1 pt-2 flex items-center justify-center relative">
       <ul className="flex items-center justify-between w-full max-w-screen-lg">
         <li className="text-white text-lg">
           <Link href="/">Home</Link>
@@ -29,6 +30,9 @@ export default async function NavBar() {
             <LogoutButton className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">
               Logout
             </LogoutButton>
+          </li>
+          <li className="text-white text-sm bg-blue-400 p-3 absolute top-2 right-0">
+            {user.role === "ADMIN" ? <Link href="/admin">Admin</Link> : null}
           </li>
         </div>
       </ul>

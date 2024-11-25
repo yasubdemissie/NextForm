@@ -5,8 +5,6 @@ import { cache } from "react";
 import prisma from "@/_lib/_base";
 import { getSession } from "@/_lib/session";
 
-import { redirect } from "next/navigation";
-
 export const verifySession = cache(async () => {
   const session = await getSession();
 
@@ -32,6 +30,7 @@ export const getUser = cache(async () => {
       id: true,
       name: true,
       email: true,
+      role: true,
     },
   });
 

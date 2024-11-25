@@ -1,11 +1,15 @@
 "use client";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { signUp } from "@/ApiFunctions/userServer";
 import { useActionState } from "react";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
 
-export default function FormPage() {
-  const [state, formAction, isPending] = useActionState(signUp, {});
+export default function SingUpForm() {
+  const [state, formAction, isLoading] = useActionState(signUp, {});
 
   // Use useEffect to show toast when there is an error message
   useEffect(() => {
@@ -14,88 +18,59 @@ export default function FormPage() {
     }
   }, [state?.error?.message]);
 
-  console.log(state);
-
   return (
-    <div className="flex items-center justify-center h-fit bg-gray-100">
-      <div className="w-full p-6 bg-white rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
-        <form action={formAction}>
-          <div className="mb-4">
-            <label
-              htmlFor="username"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Username:
-            </label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              required
-            />
-            {state?.error?.name && (
-              <p className="px-4 my-1 py-1 bg-red-500/10 text-red-500 rounded-xl">
-                {state.error.name}
-              </p>
-            )}
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email:
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              required
-            />
-            {state?.error?.email && (
-              <p className="mx-2 my-1 bg-red-500/10 text-red-500">
-                {state.error.email}
-              </p>
-            )}
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Password:
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              required
-            />
-            {state?.error?.password && (
-              <ul>
-                {state.error.password.map((error, index) => (
-                  <li
-                    key={index}
-                    className="mx-2 my-1 bg-red-500/10 text-red-500"
-                  >
-                    {error}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <button
-            disabled={isPending}
-            className="w-full px-4 py-2 bg-indigo-600 text-white font-medium rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            {isPending ? "...Submitting" : "Sign Up"}
-          </button>
-        </form>
+    <form action={formAction}>
+      <div className="grid gap-2">
+        <div className="grid gap-1">
+          <Label className="sr-only" htmlFor="name">
+            Name
+          </Label>
+          <Input
+            id="name"
+            name="name"
+            placeholder="John Doe"
+            type="text"
+            autoCapitalize="words"
+            autoComplete="name"
+            autoCorrect="off"
+            disabled={isLoading}
+          />
+        </div>
+        <div className="grid gap-1">
+          <Label className="sr-only" htmlFor="email">
+            Email
+          </Label>
+          <Input
+            id="email"
+            name="email"
+            placeholder="name@example.com"
+            type="email"
+            autoCapitalize="none"
+            autoComplete="email"
+            autoCorrect="off"
+            disabled={isLoading}
+          />
+        </div>
+        <div className="grid gap-1">
+          <Label className="sr-only" htmlFor="password">
+            Password
+          </Label>
+          <Input
+            id="password"
+            name="password"
+            placeholder="Password"
+            type="password"
+            autoCapitalize="none"
+            autoComplete="new-password"
+            autoCorrect="off"
+            disabled={isLoading}
+          />
+        </div>
+        <Button disabled={isLoading}>
+          {isLoading && <span className="mr-2 h-4 w-4 animate-spin">...</span>}
+          Create Account
+        </Button>
       </div>
-    </div>
+    </form>
   );
 }
