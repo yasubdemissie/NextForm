@@ -12,7 +12,7 @@ export default function AdminPage() {
         </p>
         <ul className="mb-6">
           <li className="mb-4">
-            <Link className="text-blue-500 hover:underline" href="/admin/user">
+            <Link className="text-blue-500 hover:underline" href="/admin/user?page=1">
               User Management
             </Link>
           </li>

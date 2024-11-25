@@ -1,4 +1,5 @@
 import prisma from "@/_lib/_base";
+import { Prisma as prim } from "@prisma/client";
 import { cache } from "react";
 
 export async function getUsers() {
@@ -37,11 +38,17 @@ export async function getUserByEmail(email) {
   return user;
 }
 
+import { Prisma } from "@prisma/client";
+
 export async function getUserByName(name) {
-  const user = await prisma.user.findUnique({
-    where: { name },
-  });
-  return user;
+  const query = `%${name
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/gi, "")}%`; // Add wildcard for SQL LIKE
+  const users = await prisma.$queryRaw(
+    prim.sql`SELECT * FROM "User" WHERE LOWER(name) LIKE ${query}`
+  );
+  return users;
 }
 
 export async function createUser(data) {
