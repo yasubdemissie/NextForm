@@ -6,7 +6,7 @@ export async function getUsers() {
   return users;
 }
 
-export async function getLimitedUser(page, num = 10) {
+export async function getLimitedUser(page = 1, num = 10) {
   const users = await prisma.user.findMany({
     skip: (page - 1) * num,
     take: num,
