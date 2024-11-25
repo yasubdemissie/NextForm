@@ -8,13 +8,21 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function PaginationFunc({ totalPages, currentPage }) {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const page = Number(searchParams.get("page"));
   const [pageNum, setPageNum] = useState(page);
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", pageNum);
+
+    router.push(`?${params.toString()}`);
+  }, [pageNum, router, searchParams]);
 
   return (
     <Pagination>
@@ -30,7 +38,11 @@ export default function PaginationFunc({ totalPages, currentPage }) {
         </PaginationItem>
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
           <PaginationItem key={page}>
-            <PaginationLink href="#" isActive={pageNum == page}>
+            <PaginationLink
+              href={`?page=${page}`}
+              onClick={() => setPageNum(page)}
+              isActive={currentPage == page}
+            >
               {page}
             </PaginationLink>
           </PaginationItem>

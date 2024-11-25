@@ -20,6 +20,7 @@ export function LoginForm() {
           <Input
             id="email"
             name="email"
+            defaultValue={"yasdam777@gmail.com"}
             placeholder="name@example.com"
             type="email"
             autoCapitalize="none"
@@ -35,6 +36,7 @@ export function LoginForm() {
           <Input
             id="password"
             name="password"
+            defaultValue={'1234qwer['}
             placeholder="Password"
             type="password"
             autoCapitalize="none"

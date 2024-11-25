@@ -1,5 +1,5 @@
 import prisma from "@/_lib/_base";
-import { revalidatePath } from "next/cache";
+import { cache } from "react";
 
 export async function getUsers() {
   const users = await prisma.user.findMany();
@@ -13,9 +13,33 @@ export async function getLimitedUser(page = 1, num = 10) {
   });
   return users;
 }
+
+export const getPaginationUser = cache(async (pageNum = 1, userNum = 10) => {
+  const skip = (pageNum - 1) * userNum || 10;
+  const users = await prisma.user.findMany({
+    take: userNum,
+    skip: skip ?? 0,
+  });
+  return users;
+});
 export async function getUser(id) {
   const user = await prisma.user.findUnique({
     where: { id },
+  });
+  return user;
+}
+
+export async function getUserByEmail(email) {
+  const user = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  return user;
+}
+
+export async function getUserByName(name) {
+  const user = await prisma.user.findUnique({
+    where: { name },
   });
   return user;
 }

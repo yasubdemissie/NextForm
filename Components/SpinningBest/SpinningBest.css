@@ -1,0 +1,32 @@
+/* HTML: <div class="loader"></div> */
+.spin_loader {
+    margin: auto;
+    margin-top: 50dvh;
+    width: 50px;
+    aspect-ratio: 1;
+    display:grid;
+    -webkit-mask: conic-gradient(from 15deg,#0000,#000);
+    animation: l26 1.3s infinite steps(12);
+  }
+  .spin_loader,
+  .spin_loader:before,
+  .spin_loader:after{
+    background:
+      radial-gradient(closest-side at 50% 12.5%,
+       #000000 96%,#dedede00) 50% 0/20% 80% repeat-y,
+      radial-gradient(closest-side at 12.5% 50%,
+       #000000 96%,#dadada00) 0 50%/80% 20% repeat-x;
+  }
+  .spin_loader:before,
+  .spin_loader:after {
+    content: "";
+    grid-area: 1/1;
+    transform: rotate(30deg);
+  }
+  .spin_loader:after {
+    transform: rotate(60deg);
+  }
+  
+  @keyframes l26 {
+    100% {transform:rotate(1turn)}
+  }
