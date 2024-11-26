@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { verifySession } from "./DAL/DataAccessLayer";
-
+export { auth as middleware } from "@/auth"
 export default async function middleware(req) {
   const ProtectedRoutes = ["/home", "/profile", "/feedback"];
   const PublicRoutes = ["/", "/login", "/register"];

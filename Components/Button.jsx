@@ -1,5 +1,22 @@
 "use client";
-const Button = ({ onClick, children, className }) => {
+
+import { useRouter } from "next/navigation";
+
+const Button = ({ onClick, children, className, back = false }) => {
+
+  const router = useRouter();
+
+  if (back) {
+    return (
+      <button
+        onClick={() => router.push('/admin')}
+        className="rounded border-2 absolute top-2 left-2 px-1"
+        type="button"
+      >
+        &larr;
+      </button>
+    );
+  }
   return (
     <button
       onClick={onClick}

@@ -3,6 +3,7 @@ import {
   getUserByName,
   getUsers,
 } from "@/ApiFunctions/adminServer";
+import Button from "@/Components/Button";
 import Input from "@/Components/Input";
 import PaginationFunc from "@/Components/Pagination";
 import SpinningBest from "@/Components/SpinningBest/SpinningBest";
@@ -11,7 +12,7 @@ import SpinningBest from "@/Components/SpinningBest/SpinningBest";
 export default async function Page({ searchParams }) {
   const numOfUsers = await getUsers();
   const { page, name } = (await searchParams) || { page: 1 };
-  const pageNumber = parseInt(page) ?? 1;
+  let pageNumber = parseInt(page) ?? 1;
 
   const totalPages = Math.floor(numOfUsers.length / 5) + 1;
 
@@ -22,9 +23,11 @@ export default async function Page({ searchParams }) {
   const users = name
     ? await getUserByName(name)
     : await getPaginationUser(pageNumber, totalPages); //
+  pageNumber = name ? Math.floor(users.length / 5) + 1 : pageNumber;
 
   return (
     <div className="max-h-screen mt-5 flex flex-col items-center justify-center">
+      <Button back={true} />
       <Input />
       <div className="w-full max-w-2xl px-2 rounded-lg border-2 relative">
         <ul className="w-full">
