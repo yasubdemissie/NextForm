@@ -1,5 +1,4 @@
 "use client";
-
 import { AddFeedBack as submitter } from "@/ApiFunctions/serverFunc";
 import { useActionState } from "react";
 
@@ -7,7 +6,7 @@ function FormPage() {
   const [state, formAction, isPending] = useActionState(submitter, {});
 
   return (
-    <div className="flex flex-col row-span-11 justify-center items-center bg-gray-100 p-0">
+    <div className="flex flex-col row-span-11 justify-center items-center p-0">
       <div className="w-3/5 p-6 bg-white rounded-lg shadow-md">
         <form action={formAction}>
           <div className="mb-4">
